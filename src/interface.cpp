@@ -6,8 +6,7 @@
 
 #include "interface.h"
 
-#define INADDR(x) (*(struct in_addr *) &ifr->x[sizeof sa.sin_port])
-#define IFRSIZE   ((int) (size * sizeof (struct ifreq)))
+#define INADDR(a) (*(struct in_addr *) &a->ifr_addr.sa_data[sizeof sa.sin_port])
 
 std::string libssdp::interface::address (std::string interface)
 {
@@ -32,7 +31,7 @@ std::string libssdp::interface::address (std::string interface)
 
 	close(sock);
 
-	rc = inet_ntop(AF_INET, &INADDR(ifr_addr.sa_data), address, INET_ADDRSTRLEN);
+	rc = inet_ntop(AF_INET, &INADDR(ifr), address, INET_ADDRSTRLEN);
 	if (rc == NULL) {
 		return "";
 	}
@@ -62,7 +61,7 @@ std::string libssdp::interface::netmask (std::string interface)
 
 	close(sock);
 
-	rc = inet_ntop(AF_INET, &INADDR(ifr_addr.sa_data), address, INET_ADDRSTRLEN);
+	rc = inet_ntop(AF_INET, &INADDR(ifr), address, INET_ADDRSTRLEN);
 	if (rc == NULL) {
 		return "";
 	}
