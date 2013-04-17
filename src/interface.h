@@ -1,6 +1,6 @@
 
-#if !defined(LIBINTERFACE_INTERFACE_H)
-#define LIBINTERFACE_INTERFACE_H
+#if !defined(libssdp_interface_h)
+#define libssdp_interface_h
 
 #include <string>
 

@@ -1,9 +1,8 @@
 
 target-y = \
 	interface-00 \
-	interface-01
-
-uname_S := $(shell sh -c 'uname -s 2>/dev/null || echo not')
+	interface-01 \
+	socket-00
 
 define test-defaults
 	$1_files-y = \
