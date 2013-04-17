@@ -15,7 +15,17 @@ libssdp.o_files-y += \
 	thread-posix.cpp
 endif
 
+ifeq ($(uname_S), Darwin)
+libssdp.o_files-y += \
+	interface-posix.cpp \
+	socket-posix.cpp \
+	thread-posix.cpp
+endif
+
 libssdp.so_files-y = \
 	libssdp.o
+
+libssdp.so_ldflags-y = \
+	-lstdc++
 
 include ../Makefile.lib
