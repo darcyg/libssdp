@@ -1,32 +1,66 @@
 
 #include <unistd.h>
 #include <string.h>
+#include <poll.h>
 
 #include "poll.h"
 
-libssdp::poll::poll (void)
-{
+namespace libssdp {
+
+	static inline int event_to_bsd (enum poll::event event)
+	{
+		int pevent;
+		pevent = 0;
+		if (event & poll::event_in) {
+			pevent |= POLLIN;
+		}
+		if (event & poll::event_out) {
+			pevent |= POLLOUT;
+		}
+		if (event & poll::event_pri) {
+			pevent |= POLLPRI;
+		}
+		if (event & poll::event_err) {
+			pevent |= POLLERR;
+		}
+		if (event & poll::event_hup) {
+			pevent |= POLLHUP;
+		}
+		if (event & poll::event_nval) {
+			pevent |= POLLNVAL;
+		}
+		return pevent;
+	}
+
 }
 
-libssdp::poll::~poll (void)
+int libssdp::poll::poll (size_t nrequests, struct poll::request *requests)
 {
+	return libssdp::poll::poll(nrequests, requests, -1);
 }
 
-bool libssdp::poll::add_object (class libssdp::poll::object *object, enum poll::event event)
+int libssdp::poll::poll (size_t nrequests, struct poll::request *requests, int timeout)
 {
-	if (object == NULL) {
+	int rc;
+	size_t r;
+	size_t npfds;
+	struct pollfd *pfds;
+	if (requests == NULL) {
 		return false;
 	}
-	if ((event & (event_in | event_out | event_pri)) == 0) {
+	if (nrequests == 0) {
 		return false;
 	}
-	return true;
-}
-
-bool libssdp::poll::del_object (class libssdp::poll::object *object)
-{
-	if (object == NULL) {
+	pfds = new struct pollfd [nrequests];
+	if (pfds == NULL) {
 		return false;
 	}
-	return true;
+	for (npfds = 0, r = 0; r < nrequests; r++) {
+		pfds[npfds].fd = requests[r].object->fd();
+		pfds[npfds].events = event_to_bsd(requests[r].events);
+		pfds[npfds].revents = 0;
+	}
+	rc = poll(pfds, npfds, timeout);
+	delete [] pfds;
+	return rc;
 }

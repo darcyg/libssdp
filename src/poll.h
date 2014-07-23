@@ -6,9 +6,9 @@
 
 namespace libssdp {
 
-	class poll {
-	public:
+	namespace poll {
 		class object {
+		public:
 			virtual int fd (void) = 0;
 		};
 
@@ -21,13 +21,14 @@ namespace libssdp {
 			event_nval = 0x00000020,
 		};
 
-		poll (void);
-		~poll (void);
+		struct request {
+			class poll::object *object;
+			enum poll::event events;
+			enum poll::event revents;
+		};
 
-		bool add_object (class libssdp::poll::object *object, enum poll::event event);
-		bool del_object (class libssdp::poll::object *object);
-
-	private:
+		int poll (size_t nrequests, struct poll::request *requests);
+		int poll (size_t nrequests, struct poll::request *requests, int timeout);
 	};
 
 };

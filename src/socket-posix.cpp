@@ -17,7 +17,8 @@ namespace libssdp {
 		int fd;
 	};
 
-	static inline int type_to_bsd (enum socket::type type) {
+	static inline int type_to_bsd (enum socket::type type)
+	{
 		switch (type) {
 			case socket::type_dgram:  return SOCK_DGRAM;
 			case socket::type_stream: return SOCK_STREAM;

@@ -20,9 +20,9 @@ int main (int argc, char *argv[])
 	int rc;
 	int port;
 	const char *address;
-	libssdp::poll *poll;
 	libssdp::socket *socket;
-	poll = NULL;
+	size_t nrequests;
+	struct libssdp::poll::request requests;
 	socket = NULL;
 	port = 0;
 	address = NULL;
@@ -73,35 +73,26 @@ int main (int argc, char *argv[])
 		printf("can not add membership\n");
 		goto bail;
 	}
-	poll = new libssdp::poll();
-	if (poll == NULL) {
-		printf("can not create poll\n");
+	requests.events = libssdp::poll::event_in;
+	requests.object = socket;
+	nrequests = 1;
+	rc = libssdp::poll::poll(nrequests, &requests, 1000);
+	if (rc < 0) {
+		printf("poll request failed\n");
 		goto bail;
 	}
-	rc = poll->add_object(socket, libssdp::poll::event_in);
-	if (rc == false) {
-		printf("can not add poll object\n");
-		goto bail;
+	if (rc == 0) {
+		printf("poll timeout\n");
+	} else {
+		printf("poll data\n");
 	}
 	if (socket != NULL) {
-		if (poll != NULL) {
-			poll->del_object(socket);
-		}
 		delete socket;
-	}
-	if (poll != NULL) {
-		delete poll;
 	}
 	return 0;
 bail:
 	if (socket != NULL) {
-		if (poll != NULL) {
-			poll->del_object(socket);
-		}
 		delete socket;
-	}
-	if (poll != NULL) {
-		delete poll;
 	}
 	return -1;
 }
