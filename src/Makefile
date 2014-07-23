@@ -12,6 +12,7 @@ ifeq ($(uname_S), Linux)
 libssdp.o_files-y += \
 	interface-posix.cpp \
 	socket-posix.cpp \
+	poll-posix.cpp \
 	thread-posix.cpp
 endif
 
@@ -19,6 +20,7 @@ ifeq ($(uname_S), Darwin)
 libssdp.o_files-y += \
 	interface-posix.cpp \
 	socket-posix.cpp \
+	poll-posix.cpp \
 	thread-posix.cpp
 endif
 

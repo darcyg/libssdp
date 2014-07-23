@@ -28,7 +28,7 @@ namespace libssdp {
 }
 
 
-libssdp::socket::socket (enum type type)
+libssdp::socket::socket (enum libssdp::socket::type type)
 	: _priv(new socket_priv())
 {
 	if (_priv == NULL) {
@@ -53,7 +53,7 @@ libssdp::socket::~socket (void)
 	}
 }
 
-bool libssdp::socket::set_multicastttl (int ttl)
+bool libssdp::socket::set_multicast_ttl (int ttl)
 {
 	int rc;
 	if (_priv == NULL) {
@@ -145,4 +145,12 @@ bool libssdp::socket::drop_membership (std::string address)
 	mreq.imr_interface.s_addr = htonl(INADDR_ANY);
 	rc = setsockopt(_priv->fd, IPPROTO_IP, IP_DROP_MEMBERSHIP, (void *) &mreq, sizeof(mreq));
 	return (rc == 0) ? true : false;
+}
+
+int libssdp::socket::fd (void)
+{
+	if (_priv == NULL) {
+		return -1;
+	}
+	return _priv->fd;
 }

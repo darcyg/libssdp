@@ -2,6 +2,7 @@
 target-y = \
 	interface-00 \
 	interface-01 \
+	poll-00 \
 	socket-00
 
 define test-defaults

@@ -90,7 +90,7 @@ bool libssdp::ssdp::start (void)
 	if (_announce == NULL) {
 		goto bail;
 	}
-	rc = _announce->set_multicastttl(_ttl);
+	rc = _announce->set_multicast_ttl(_ttl);
 	if (rc == false) {
 		goto bail;
 	}
