@@ -6,7 +6,7 @@
 #include <net/if.h>
 #include <arpa/inet.h>
 
-#include "interface.h"
+#include "../interface.h"
 
 #define INADDR(a) (*(struct in_addr *) &a->ifr_addr.sa_data[sizeof sa.sin_port])
 

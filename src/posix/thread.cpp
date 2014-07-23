@@ -1,6 +1,6 @@
 
 #include <pthread.h>
-#include "thread.h"
+#include "../thread.h"
 
 namespace libssdp {
 

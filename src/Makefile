@@ -9,19 +9,19 @@ libssdp.o_files-y = \
 	ssdp.cpp
 
 ifeq ($(uname_S), Linux)
-libssdp.o_files-y += \
-	interface-posix.cpp \
-	socket-posix.cpp \
-	poll-posix.cpp \
-	thread-posix.cpp
+subdir-y += \
+		posix
+
+libssdp.o_files-y = \
+		posix/libposix.o
 endif
 
 ifeq ($(uname_S), Darwin)
-libssdp.o_files-y += \
-	interface-posix.cpp \
-	socket-posix.cpp \
-	poll-posix.cpp \
-	thread-posix.cpp
+subdir-y += \
+		posix
+
+libssdp.o_files-y = \
+		posix/libposix.o
 endif
 
 libssdp.so_files-y = \

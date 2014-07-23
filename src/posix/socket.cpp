@@ -8,7 +8,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
-#include "socket.h"
+#include "../socket.h"
 
 namespace libssdp {
 

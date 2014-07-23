@@ -3,7 +3,7 @@
 #include <string.h>
 #include <poll.h>
 
-#include "poll.h"
+#include "../poll.h"
 
 namespace libssdp {
 
