@@ -6,8 +6,7 @@
 #include "../poll.h"
 
 namespace libssdp {
-
-	static inline int event_to_bsd (enum poll::event event)
+	static inline int event_to_bsd (int event)
 	{
 		int pevent;
 		pevent = 0;
@@ -32,6 +31,30 @@ namespace libssdp {
 		return pevent;
 	}
 
+	static inline int bsd_to_event (int pevent)
+	{
+		int event;
+		event = 0;
+		if (pevent & POLLIN) {
+			event |= poll::event_in;
+		}
+		if (pevent & POLLOUT) {
+			event |= poll::event_out;
+		}
+		if (pevent & POLLPRI) {
+			event |= poll::event_pri;
+		}
+		if (pevent & POLLERR) {
+			event |= poll::event_err;
+		}
+		if (pevent & POLLHUP) {
+			event |= poll::event_hup;
+		}
+		if (pevent & POLLNVAL) {
+			event |= poll::event_nval;
+		}
+		return pevent;
+	}
 }
 
 int libssdp::poll::poll (size_t nrequests, struct poll::request *requests)
@@ -43,7 +66,6 @@ int libssdp::poll::poll (size_t nrequests, struct poll::request *requests, int t
 {
 	int rc;
 	size_t r;
-	size_t npfds;
 	struct pollfd *pfds;
 	if (requests == NULL) {
 		return false;
@@ -55,12 +77,18 @@ int libssdp::poll::poll (size_t nrequests, struct poll::request *requests, int t
 	if (pfds == NULL) {
 		return false;
 	}
-	for (npfds = 0, r = 0; r < nrequests; r++) {
-		pfds[npfds].fd = requests[r].object->fd();
-		pfds[npfds].events = event_to_bsd(requests[r].events);
-		pfds[npfds].revents = 0;
+	for (r = 0; r < nrequests; r++) {
+		pfds[r].fd = requests[r].object->fd();
+		pfds[r].events = event_to_bsd(requests[r].events);
+		pfds[r].revents = 0;
+		requests[r].revents = (enum poll::event) 0;
 	}
-	rc = poll(pfds, npfds, timeout);
+	rc = ::poll(pfds, nrequests, timeout);
+	if (rc > 0) {
+		for (r = 0; r < nrequests; r++) {
+			requests[r].revents = bsd_to_event(pfds[r].revents);
+		}
+	}
 	delete [] pfds;
 	return rc;
 }

@@ -5,7 +5,6 @@
 #include <string>
 
 namespace libssdp {
-
 	namespace poll {
 		class object {
 		public:
@@ -23,14 +22,13 @@ namespace libssdp {
 
 		struct request {
 			class poll::object *object;
-			enum poll::event events;
-			enum poll::event revents;
+			int events;
+			int revents;
 		};
 
 		int poll (size_t nrequests, struct poll::request *requests);
 		int poll (size_t nrequests, struct poll::request *requests, int timeout);
 	};
-
 };
 
 #endif

@@ -4,10 +4,9 @@
 
 #include <string>
 
-#include "socket.h"
-#include "thread.h"
-
 namespace libssdp {
+	class socket;
+	class thread;
 
 	class event {
 	public:
@@ -29,11 +28,11 @@ namespace libssdp {
 		int _ttl;
 		std::string _address;
 		std::string _netmask;
-		cond _cond;
-		mutex _mutex;
-		socket *_socket;
-		socket *_announce;
-		thread *_thread;
+		class cond *_cond;
+		class mutex *_mutex;
+		class socket *_socket;
+		class socket *_announce;
+		class thread *_thread;
 		static void * worker (void *arg);
 		bool _started;
 		bool _running;

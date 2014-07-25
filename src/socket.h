@@ -25,11 +25,12 @@ namespace libssdp {
 		bool add_membership (std::string address);
 		bool drop_membership (std::string address);
 		bool bind (std::string address, unsigned int port);
+		ssize_t read (void *buffer, size_t count);
 
 		virtual int fd (void);
 
 	private:
-		socket_priv *_priv;
+		class socket_priv *_priv;
 	};
 
 };

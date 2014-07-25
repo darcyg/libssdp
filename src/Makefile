@@ -12,7 +12,7 @@ ifeq ($(uname_S), Linux)
 subdir-y += \
 		posix
 
-libssdp.o_files-y = \
+libssdp.o_files-y += \
 		posix/libposix.o
 endif
 
@@ -20,7 +20,7 @@ ifeq ($(uname_S), Darwin)
 subdir-y += \
 		posix
 
-libssdp.o_files-y = \
+libssdp.o_files-y += \
 		posix/libposix.o
 endif
 

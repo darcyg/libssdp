@@ -11,7 +11,6 @@
 #include "../socket.h"
 
 namespace libssdp {
-
 	struct socket_priv {
 		int type;
 		int fd;
@@ -25,7 +24,6 @@ namespace libssdp {
 		}
 		return -1;
 	}
-
 }
 
 
@@ -100,6 +98,19 @@ bool libssdp::socket::bind (std::string address, unsigned int port)
 	soc.sin_port = htons(port);
 	rc = ::bind(_priv->fd, (struct sockaddr *) &soc, len);
 	return (rc == 0) ? true : false;
+}
+
+ssize_t libssdp::socket::read (void *buffer, size_t count)
+{
+	int rc;
+	if (_priv == NULL) {
+		return false;
+	}
+	if (_priv->fd < 0) {
+		return false;
+	}
+	rc = ::read(_priv->fd, buffer, count);
+	return rc;
 }
 
 bool libssdp::socket::add_membership (std::string address)
