@@ -10,18 +10,18 @@ libssdp.o_files-y = \
 
 ifeq ($(uname_S), Linux)
 subdir-y += \
-		posix
+	posix
 
 libssdp.o_files-y += \
-		posix/libposix.o
+	posix/libposix.o
 endif
 
 ifeq ($(uname_S), Darwin)
 subdir-y += \
-		posix
+	posix
 
 libssdp.o_files-y += \
-		posix/libposix.o
+	posix/libposix.o
 endif
 
 libssdp.so_files-y = \

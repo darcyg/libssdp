@@ -8,6 +8,8 @@ int main (int argc, char *argv[])
 {
 	int rc;
 	class libssdp::ssdp *ssdp;
+	(void) argc;
+	(void) argv;
 	ssdp = new libssdp::ssdp();
 	if (ssdp == NULL) {
 		printf("ssdp create failed\n");
