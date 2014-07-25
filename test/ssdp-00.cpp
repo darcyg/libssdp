@@ -25,9 +25,7 @@ int main (int argc, char *argv[])
 	}
 	delete ssdp;
 	return 0;
-bail:
-	if (ssdp != NULL) {
-		ssdp->stop();
+bail:	if (ssdp != NULL) {
 		delete ssdp;
 	}
 	return -1;

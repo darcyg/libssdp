@@ -43,13 +43,15 @@ libssdp::ssdp::ssdp (std::string interface)
 	_started = false;
 	_running = false;
 	_stopped = false;
-	delete _cond;
-	delete _mutex;
+	_cond = new libssdp::cond();
+	_mutex = new libssdp::mutex();
 }
 
 libssdp::ssdp::~ssdp (void)
 {
 	stop();
+	delete _cond;
+	delete _mutex;
 }
 
 void * libssdp::ssdp::worker (void *arg)
